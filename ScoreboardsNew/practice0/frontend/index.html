@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPM Retail for Head Office</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Multiselect CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
+
+    <!-- STYLESHEET -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <p class="demo"></p>
+    <script>
+        fetch('/', {method:'GET'})
+            .then(response => response.json())
+            .then(MeasureName => console.log(MeasureName))
+
+    </script>
+    <!-- top section -->
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-sm-9 p-3">
+                <div class="top-left">
+                    <p><strong>Branch B - Scoreboard | Categories: Dairy, Milk, Soup ; Suppliers: A, B</strong></p>
+                    <p><strong>Quality Retail Group</strong></p>
+                    <p>For the last 30 days to Friday 19th July 2024</p>
+                </div>
+            </div>
+            <div class="col-sm-3 text-sm-end text-center p-3 mb-2">
+                <div class="top-right">
+                    <button class="btn btn-outline-dark my-2"><i class="bi bi-pencil-square"></i> Edit Dashboard</button>
+                    <button class="btn btn-outline-dark my-2"><a href="javascript:PrintPage(this)"><i class="bi bi-printer"></i> Print Page</a></button>
+                    <button class="btn btn-outline-dark my-2" onclick="toggleFiltering()"><i class="bi bi-funnel"></i> Filters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- filtering -->
+    <div class="container">
+        <div class="card filtering-card" id="filtering-card" style="display: none;">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 style="color: black;">Filtering</h6>
+                <a href="#" onclick="toggleFiltering()"><i class="bi bi-x-circle"></i></a>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-4 mb-2">
+                        <select class="form-select filtering-options" aria-label="Categories" id="Categories" multiple>
+                            <!-- <option value="Dairy" selected>Dairy</option>
+                            <option value="Milk" selected>Milk</option>
+                            <option value="Soup" selected>Soup </option>
+                            <option value="Vege">Vege </option>
+                            <option value="Bread">Bread </option> -->
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 mb-2">
+                        <select class="form-select filtering-options" aria-label="Suppliers" id="Suppliers" multiple>
+                            <!-- <option value="1" selected>A</option>
+                            <option value="2" selected>B</option>
+                            <option value="3">C</option> -->
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex justify-content-md-start justify-content-between">
+                        <div class="button-group">
+                            <button type="button" class="btn btn-dark filtering-button">Update</button>
+                            <button type="button" class="btn btn-secondary filtering-button">Clear Filters</button>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <!-- performance -->
+    <div class="container">
+        <div class="card performance text-center">
+            <h6>The Overall Performance is <span style="color: red;">4th</span> out of 15 Stores</h6>
+        </div>
+    </div>
+    <br>
+    <!-- kpi -->
+    <div class="container" id="kpi-container">
+        <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card kpi">
+                    <div class="card-header kpi-heading">
+                        <a href="https://rpmretail.com/support-article/the-five-minute-user-guide-to-rpm/">Gross Margin %:</a> <p>50.2%</p>
+                    </div>
+                    <div class="card-body kpi-details">
+                        <div class="kpi-item">
+                            <h6>Total Gross Margin $:</h6>
+                            <p>$38,059</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Rank:</h6>
+                            <p>3rd</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Group Average:</h6>
+                            <p>49.5%</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Best:</h6>
+                            <p>50.5%</p>
+                        </div>
+                    </div>
+                    <img src="thumbnail.png" alt="thumbnail" class="card-img-bottom">
+                    <div class="card-footer bg-transparent kpi-fix">
+                        <button type="button" class="btn btn-primary"><i class="bi bi-wrench-adjustable"></i> Fix</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card kpi">
+                    <div class="card-header kpi-heading">
+                        <a href="https://rpmretail.com/support-article/the-five-minute-user-guide-to-rpm/">Sales Growth % : </a><p>-7%</p>
+                    </div>
+                    <div class="card-body kpi-details">
+                        <div class="kpi-item">
+                            <h6>Total Sales $:</h6>
+                            <p>$111,591</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Rank:</h6>
+                            <p>7th</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Group Average:</h6>
+                            <p>2%</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Best:</h6>
+                            <p>6%</p>
+                        </div>
+                    </div>
+                    <img src="thumbnail.png" alt="thumbnail" class="card-img-bottom">
+                    <div class="card-footer bg-transparent kpi-fix">
+                        <button type="button" class="btn btn-secondary" disabled><i class="bi bi-wrench-adjustable"></i> Fix</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card kpi">
+                    <div class="card-header kpi-heading">
+                        <i class="bi bi-exclamation-circle-fill" style="color: red;"></i><a href="https://rpmretail.com/support-article/the-five-minute-user-guide-to-rpm/">Customer Growth % : </a><p style="background-color: red; color: white;"><strong>-5%</strong></p>
+                    </div>
+                    <div class="card-body kpi-details">
+                        <div class="kpi-item">
+                            <h6>Total Customers:</h6>
+                            <p>3,626</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Rank:</h6>
+                            <p>12th</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Group Average:</h6>
+                            <p>1%</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Best:</h6>
+                            <p>9%</p>
+                        </div>
+                    </div>
+                    <img src="thumbnail.png" alt="thumbnail" class="card-img-bottom">
+                    <div class="card-footer bg-transparent kpi-fix">
+                        <button type="button" class="btn btn-secondary" disabled><i class="bi bi-wrench-adjustable"></i> Fix</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card kpi">
+                    <div class="card-header kpi-heading">
+                        <a href="https://rpmretail.com/support-article/the-five-minute-user-guide-to-rpm/">Low Stock % : </a><p style="background-color: rgb(125, 255, 146);">12%</p>
+                    </div>
+                    <div class="card-body kpi-details">
+                        <div class="kpi-item">
+                            <h6>Rank:</h6>
+                            <p>3rd</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Group Average:</h6>
+                            <p>19%</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Best:</h6>
+                            <p>11%</p>
+                        </div>
+                    </div>
+                    <img src="thumbnail.png" alt="thumbnail" class="card-img-bottom">
+                    <div class="card-footer bg-transparent kpi-fix">
+                        <button type="button" class="btn btn-primary"><i class="bi bi-wrench-adjustable"></i> Fix</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Repeat KPI cards here -->
+        </div>
+        <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card kpi">
+                    <div class="card-header kpi-heading">
+                        <a href="https://rpmretail.com/support-article/the-five-minute-user-guide-to-rpm/">Dead Stock % : </a><p>19%</p>
+                    </div>
+                    <div class="card-body kpi-details">
+                        <div class="kpi-item">
+                            <h6>Total Dead Stock $:</h6>
+                            <p>$19,757</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Rank:</h6>
+                            <p>10th</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Group Average:</h6>
+                            <p>26%</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Best:</h6>
+                            <p>16%</p>
+                        </div>
+                    </div>
+                    <img src="thumbnail.png" alt="thumbnail" class="card-img-bottom">
+                    <div class="card-footer bg-transparent kpi-fix">
+                        <button type="button" class="btn btn-primary"><i class="bi bi-wrench-adjustable"></i> Fix</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card kpi">
+                    <div class="card-header kpi-heading">
+                        <a href="https://rpmretail.com/support-article/the-five-minute-user-guide-to-rpm/">Average Sale : </a><p>$20.58</p>
+                    </div>
+                    <div class="card-body kpi-details">
+                        <div class="kpi-item">
+                            <h6>Rank:</h6>
+                            <p>9th</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Group Average:</h6>
+                            <p>$20.02</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Best:</h6>
+                            <p>$24.60</p>
+                        </div>
+                    </div>
+                    <img src="thumbnail.png" alt="thumbnail" class="card-img-bottom">
+                    <div class="card-footer bg-transparent kpi-fix">
+                        <button type="button" class="btn btn-secondary" disabled><i class="bi bi-wrench-adjustable"></i> Fix</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card kpi">
+                    <div class="card-header kpi-heading">
+                        <i class="bi bi-exclamation-circle-fill" style="color: red;"></i><a href="https://rpmretail.com/support-article/the-five-minute-user-guide-to-rpm/">Products Per Customer : </a><p style="background-color: red; color: white;"><strong>1.95</strong></p>
+                    </div>
+                    <div class="card-body kpi-details">
+                        <div class="kpi-item">
+                            <h6>Rank:</h6>
+                            <p>12th</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Group Average:</h6>
+                            <p>2.02</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Best:</h6>
+                            <p>2.15</p>
+                        </div>
+                    </div>
+                    <img src="thumbnail.png" alt="thumbnail" class="card-img-bottom">
+                    <div class="card-footer bg-transparent kpi-fix">
+                        <button type="button" class="btn btn-primary"><i class="bi bi-wrench-adjustable"></i> Fix</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card kpi">
+                    <div class="card-header kpi-heading">
+                        <i class="bi bi-exclamation-circle-fill" style="color: red;"></i><a href="https://rpmretail.com/support-article/the-five-minute-user-guide-to-rpm/">Stock Turn : </a><p style="background-color: red; color: white;"><strong>2.50</strong></p>
+                    </div>
+                    <div class="card-body kpi-details">
+                        <div class="kpi-item">
+                            <h6>Total Stock $:</h6>
+                            <p>$84,757</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Rank:</h6>
+                            <p>9th</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Group Average:</h6>
+                            <p>3.20</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Best:</h6>
+                            <p>4.80</p>
+                        </div>
+                    </div>
+                    <img src="thumbnail.png" alt="thumbnail" class="card-img-bottom">
+                    <div class="card-footer bg-transparent kpi-fix">
+                        <button type="button" class="btn btn-secondary" disabled><i class="bi bi-wrench-adjustable"></i> Fix</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card kpi">
+                    <div class="card-header kpi-heading">
+                        <a href="https://rpmretail.com/support-article/the-five-minute-user-guide-to-rpm/">Average Product Price :  </a><p>$20.58</p>
+                    </div>
+                    <div class="card-body kpi-details">
+                        <div class="kpi-item">
+                            <h6>Rank:</h6>
+                            <p>9th</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Group Average:</h6>
+                            <p>$20.02</p>
+                        </div>
+                        <div class="kpi-item">
+                            <h6>Best:</h6>
+                            <p>$24.60</p>
+                        </div>
+                    </div>
+                    <img src="thumbnail.png" alt="thumbnail" class="card-img-bottom">
+                    <div class="card-footer bg-transparent kpi-fix">
+                        <button type="button" class="btn btn-secondary" disabled><i class="bi bi-wrench-adjustable"></i> Fix</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="container">
+        <div class="pagination-controls d-flex justify-content-between align-items-center">
+            <select id="page-size" class="form-select w-auto">
+                <option value="8" selected>8</option>
+                <option value="all">All</option>
+            </select>
+            <div class="pagination-buttons">
+                <button id="prev-page" class="btn btn-secondary"><</button>
+                <button id="next-page" class="btn btn-secondary">></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

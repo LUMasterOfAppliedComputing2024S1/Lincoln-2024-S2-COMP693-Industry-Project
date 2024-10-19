@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPM Retail for Store View</title>
+    
+    <script>
+        // Function to update the title with the current screen size
+        function updateTitleWithScreenSize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            document.title = `RPM Retail for Store View: ${width}x${height}`;
+        }
+
+        window.onload = updateTitleWithScreenSize;
+
+        window.onresize = updateTitleWithScreenSize;
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Select2 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Multiselect CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
+
+    <!-- semantic-ui CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+
+    <!-- STYLESHEET -->
+    <link rel="stylesheet" href="/style.css">
+
+    <!-- Toastify -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        @media print{
+
+            .ScoreboardHidden{
+                margin: 0 auto;
+                display: none;
+            }
+            #ScoreboardHidden{
+                margin: 0 auto;
+                display: none;
+            }
+            #side-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-left: 4%;
+            }
+            #top-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-left: 4%;
+            }
+            #totalSalesChart{
+                width:92% !important;
+                max-width:300px !important;
+                height:92% !important;
+                max-height:300px !important;
+            }
+            #totalStockChart{
+                width:92% !important;
+                max-width:300px !important;
+                height:92% !important;
+                max-height:300px !important;
+            }
+            body {
+                transform: scale(0.98);
+                transform-origin: top left;
+                width: 133%;
+                overflow: hidden;
+                margin-right: 5% auto;
+            }
+            #logo {
+                margin-top: 5%;
+            }                
+        }
+
+    </style>
+
+    <script>
+        function PrintPage(  )
+            {
+                window.print();
+            }
+    </script>
+</head>
+
+<body>
+    
+    <div id="results" hidden></div>
+    <div id="ShowWizard" hidden></div>
+    <div id="IsGroup" hidden></div>
+    <div id="ObjectOne" hidden></div>
+    <div id="ObjectMany" hidden></div>
+    <div id="GraphLink" hidden></div>
+    <div id="spinner" class="spinner-border" role="status" style="display: none;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      
+
+        <!-- top section -->
+        <div class="container" style="width: 75%;" id="top-container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-sm-9 p-3">
+                    <div class="top-left"  id="heading">
+                        <h1>Scoreboard<span id="store-heading"> - <%= StoreName %></span> <span id="category-heading"></span> <span id="supplier-heading"></span></h1>
+                        <p id="kpiDate">For the last 30 days to <%= kpiDate %></p>
+                        <p id="subscription"><%= subscription.GroupName %></p>
+                    </div>
+                </div>
+                <div class="col-sm-3 text-sm-end text-center p-3 mb-2" id="ScoreboardHidden">
+                    <div class="top-right">
+                        <button class="btn btn-outline-dark my-2" style="width: 100%;" onclick="PrintPage()"><i class="bi bi-printer"></i> Print Page</button>
+                        <!-- <button class="btn btn-outline-dark my-2" onclick="toggleFiltering()"><i class="bi bi-funnel"></i> Filters</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="container" id="side-container">
+            <div class="row">
+                <!-- Performance Section -->
+
+                <div class="col-md-4 col-lg-3 col-xl-custom col-l-custom" id="performance-container">
+                    <div class="row mb-2">
+                        <div id="performance" class="col-12">
+                            <div class="card performance text-center" id="<%= results.IndexIndicator[0] %>VsBenchmark">
+                                <h6 style="font-weight: 300; font-size: 110%; margin: 5%;"><%= results.MeasureDescription[0] %><br>  <span style="color: black; font-weight: 900; font-size: 300%;"><%= results.Rank[0] %></span> <br>of <%= results.TotalObjects[0] %> <%= ObjectMany %></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sidebar -->
+                    <div class="row bg-light ">
+                        <nav id="sidebar" class="position-sticky">
+                            <ul class="nav flex-column card bg-light" id="sideChart">
+                                <li class="nav-item">
+                                    <canvas id="totalSalesChart" style="width:95%;max-width:300px"></canvas>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex justify-content-center" href="#" style="font-weight: bold; margin: 2%;">
+                                        Top Categories
+                                    </a>
+                                    
+                                    <div class="d-flex justify-content-between" style="margin: 0; padding: 0;">
+                                        <p style="margin: 0; padding-left: 15%;">1. Coughs & Colds</p>
+                                        <span style="margin: 0; padding-right: 15%; font-weight: 900;">15%</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between" style="margin: 0; padding: 0;">
+                                        <p style="margin: 0; padding-left: 15%;">2. Health Supplements</p>
+                                        <span style="margin: 0; padding-right: 15%; font-weight: 900;">12%</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between" style="margin: 0; padding: 0;">
+                                        <p style="margin: 0 auto; padding-left: 0">3. Skin Care</p>
+                                        <span style="margin: 0; padding-right: 15%; font-weight: 900;">11%</span>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex justify-content-center" href="#" style="font-weight: bold; margin: 0 auto;">
+                                        Top Products
+                                    </a>
+                                    
+                                    <div class="d-flex justify-content-between" style="margin: 0; padding: 0;">
+                                        <p style="margin: 0; padding-left: 5%;">1. Truck Licence Medical </p>
+                                    </div>
+                                    <div class="d-flex justify-content-between" style="margin: 0; padding: 0;">
+                                        <p style="margin: 0; padding-left: 5%;">2. Sleep Test</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between" style="margin: 0; padding: 0;">
+                                        <p style="margin: 0; padding-left: 5%;">3. CODRAL DAY/NIGHT…</p>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <canvas id="totalStockChart" style="width:95%;max-width:300px"></canvas>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex justify-content-center" href="#" style=" font-weight: bold; margin: 2%;">
+                                        <span style="color: red; font-size: x-large; font-weight: 900;">36% </span> &nbsp; Dead Stock
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- KPI Section -->
+                <main class="col-md-10 ms-sm-auto col-lg-9">
+                    <div class="container" id="kpi-container">
+                        <div class="row g-3">
+                            <% if (results.rsResults.length > 1) { %>
+                                <% results.rsResults.forEach(function(kpi, index) { %>
+                                    <% if (index > 0) { %>
+                                        <% if (index % 3 === 1) { %>
+                                            </div><div class="row g-4">
+                                        <% } %>
+                                        <div class="col-6 col-sm-6 col-md-4 col-xs-custom">
+                                            <div class="card kpi" id="<%= results.IndexIndicator[index] %>VsBenchmark" style="height:auto; width: auto; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 20px 0 rgba(0, 0, 0, 0.1);margin-bottom: 10px;">
+                                                <div class="kpi-heading">
+                                                    <a href="javascript:void(0)" id="<%= results.MeasureDescription[index] %>" title="View the definition and calculation for <%= results.MeasureDescription[index] %>" onclick="openDefinition('<%= results.MeasureDescription[index] %>')"><%= results.MeasureDescription[index] %> </a>
+                                                </div>
+                                                <div class="card-body kpi-details d-flex flex-column justify-content-center">
+                                                    <div class="container" style="bottom:30px;">
+                                                        <% if (results.MeasureValue[index] !== null || results.MeasureValue[index] !== '') { %>
+                                                            <p>
+                                                                <%= results.MeasureValue[index] %>
+                                                            </p>
+                                                        <% } else { %>
+                                                            <p>-</p>
+                                                            <% } %>
+                                                    </div>
+                                                    <div class="container-sm kpi-item-container">
+                                                        <div class="kpi-item">
+                                                            <h6>Group Average:</h6>
+                                                            <% if (results.ParentMeasure[index] !== null || results.ParentMeasure[index] !== '') { %>
+                                                                <span><%= results.ParentMeasure[index] %></span>
+                                                            <% } else { %>
+                                                                <span>-</span>
+                                                            <% } %>
+                                                        </div>
+                                                        <div class="kpi-item">
+                                                            <h6>Top Result:</h6>
+                                                            <% if (results.Best[index] !== null || results.Best[index] !== '') { %>
+                                                                <span><%= results.Best[index] %></span>
+                                                            <% } else { %>
+                                                                <span>-</span>
+                                                            <% } %>
+                                                        </div>	
+                                                    </div>
+                                                </div>
+
+                                                <div class="kpi-item container-sm kpi-item-container" style="justify-content: center; margin-bottom: 10px; width:90%;">
+                                                    <div class="kpi-item">
+                                                        <h3 style="margin-right: 10px;"><strong><%= results.Rank[index]%></strong></h3>
+                                                    </div>
+                                                    <br>
+                                                    <div class="kpi-item">
+                                                        <p style="margin-right: 50px;">of <%= results.TotalObjects[0]%> <%= ObjectMany%></p>
+                                                    </div>
+                                                        <% if (last25DaysDateResults.MeasureValue[index] === undefined || last25DaysDateResults.MeasureValue[index] === '') { %>
+                                                            <img src="/hyphen.png" alt="hyphen" class="card-img-bottom" id="hyphen" onclick="openToolkitGraph('<%= results.MeasureID[index] %>', '<%= GraphLink %>')">
+                                                        <% } else if (last25DaysDateResults.MeasureValue[index] !== '' && last25DaysDateResults.MeasureValue[index] > results.MeasureValue[index] && last25DaysDateResults.MeasureDescription[index] === 'Dead Stock %') { %>
+                                                            <img src="gooddown.png" alt="gooddown" class="card-img-bottom" style="width: 30px; height: 30px; cursor: pointer;" onclick="openToolkitGraph('<%= results.MeasureID[index] %>', '<%= GraphLink %>')">
+                                                        <% } else if (last25DaysDateResults.MeasureValue[index] !== '' && last25DaysDateResults.MeasureValue[index] < results.MeasureValue[index] && last25DaysDateResults.MeasureDescription[index] === 'Dead Stock %') { %>
+                                                            <img src="badup.png" alt="badup" class="card-img-bottom" style="width: 30px; height: 30px; cursor: pointer;" onclick="openToolkitGraph('<%= results.MeasureID[index] %>', '<%= GraphLink %>')">
+                                                        <% } else if (last25DaysDateResults.MeasureValue[index] !== '' && last25DaysDateResults.MeasureValue[index] > results.MeasureValue[index] && last25DaysDateResults.MeasureDescription[index] === 'Low Stock %') { %>
+                                                            <img src="gooddown.png" alt="gooddown" class="card-img-bottom" style="width: 30px; height: 30px; cursor: pointer;" onclick="openToolkitGraph('<%= results.MeasureID[index] %>', '<%= GraphLink %>')">
+                                                        <% } else if (last25DaysDateResults.MeasureValue[index] !== '' && last25DaysDateResults.MeasureValue[index] < results.MeasureValue[index] && last25DaysDateResults.MeasureDescription[index] === 'Low Stock %') { %>
+                                                            <img src="badup.png" alt="badup" class="card-img-bottom" style="width: 30px; height: 30px; cursor: pointer;" onclick="openToolkitGraph('<%= results.MeasureID[index] %>', '<%= GraphLink %>')">
+                                                        <% } else if (last25DaysDateResults.MeasureValue[index] !== '' && last25DaysDateResults.MeasureValue[index] > results.MeasureValue[index]) { %>
+                                                            <img src="/baddown.png" alt="baddown" class="card-img-bottom" style="width: 30px; height: 30px; cursor: pointer;" onclick="openToolkitGraph('<%= results.MeasureID[index] %>', '<%= GraphLink %>')">
+                                                        <% } else if (last25DaysDateResults.MeasureValue[index] !== '' &&last25DaysDateResults.MeasureValue[index] < results.MeasureValue[index]) { %>
+                                                            <img src="/good.png" alt="good" class="card-img-bottom" style="width: 30px; height: 30px; cursor: pointer;" onclick="openToolkitGraph('<%= results.MeasureID[index] %>', '<%= GraphLink %>')">
+                                                        <% } else { %>
+                                                            <img src="/left.png" alt="left" class="card-img-bottom" style="margin-right: 5%; width: 30px; height: 30px; cursor: pointer;">
+                                                            <img src="/right.png" alt="right" class="card-img-bottom" style="width: 30px; height: 30px; cursor: pointer;" onclick="openToolkitGraph('<%= results.MeasureID[index] %>', '<%= GraphLink %>')">
+                                                        <% } %>
+                                                </div>
+
+                                                <div class="bg-transparent kpi-fix d-flex justify-content-center align-items-center ScoreboardHidden">
+                                                    <% 
+                                                        const measureList = ["Gross Margin %", "Low Stock %", "Dead Stock %", "Products Per Customer", "Average Product Price", "Sales Growth", "Average Sale"];
+                                                        const showFixButton = measureList.includes(results.MeasureDescription[index]);
+                                                    %>                                                
+                                                        <div class="d-grid gap-2 col-9 mx-auto ScoreboardHidden">
+                                                            <button type="button" id="fixButton<%= index %>" style="margin-bottom:5%;" class="btn <%= showFixButton ? 'btn-light' : 'btn-secondary' %> ScoreboardHidden" <%= showFixButton ? '' : 'disabled' %>>
+                                                                <% if (showFixButton) { %>
+                                                                    <i class="bi bi-wrench-adjustable" style="color: blue;"></i> <strong style="color: blue;">Fix</strong>
+                                                                <% } else { %>
+                                                                    <i class="bi bi-wrench-adjustable"></i> <strong>Fix</strong>
+                                                                <% } %>
+                                                            </button>
+                                                        </div>
+                                                </div>
+                                                
+                                                <script>
+                                                    document.getElementById('fixButton<%= index %>').addEventListener('click', function() {
+                                                        const childKey = "<%= SelectedObjectKey %>";
+                                                        const measureGroup = "<%= results.MeasureGroup[index] %>";
+                                                        const url = `https://dev-toolkit.rpmretail.com/Application/Resources/Wizards/ImprovementWizards/${measureGroup}/Step01.asp?Store=${childKey}&NumOfFilter=10`;
+                                                        
+                                                        window.open(url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                <% }); %>
+                            <% } %>
+                        </div>
+                    </div>
+                    <% if (results.rsResults.length>6) { %>
+                        <div class="container" style="margin-left: 1%;" id="logo">
+                            <div class="row g-3">
+                                <div class="col-12 d-flex justify-content-end align-items-center" >
+                                    <img style="vertical-align:middle; border:0px solid #000000; width: 40%; height: 80%;" src="/logo.png">
+                                </div>
+                            </div>
+                        </div>
+                        <% } else {%>
+                        <div class="container" style="margin-top: 20%;" id="logo">
+                            <div class="row g-3">
+                                <div class="col-12 d-flex justify-content-end align-items-center" >
+                                    <img style="vertical-align:middle; border:0px solid #000000; width: 40%; height: 80%;" src="/logo.png">
+                                </div>
+                            </div>
+                        </div>
+                    <%}%>
+                </main>
+            </div>
+        </div>
+        <br><br>
+
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
+    <script src="/script.js"></script>
+    <script src="/definition.js"></script>
+    <script src="/chart.js"></script>
+    <script>    console.log("GraphLink:",GraphLink)
+    </script>
+</body>
+</html>
